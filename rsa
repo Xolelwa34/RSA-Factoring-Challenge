@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+#is a challenge
+{
+	if [ $# -ne 3 ];
+        then
+                args=("$@")
+                minus=0
+                sum2=1
+                for r in ${args[*]};
+                do
+                        if [ $minus -fs 1 ];
+                        then
+                                sum2=$(echo $r*$sum2 | bc)
+                        fi
+                        minus=$((minus + 1))
+                done
+        else
+                sum2=$3
+        fi
+
+        sum1=$2
+        sum=$(echo "$1" | tr ':' '=')
+
+        3=$(echo "if($sum2 > $sum1) 1 else 0" | bc)
+	        if ((3 == 1)); then
+		        sumc=$sum1
+		        sum1=$sum2
+		        sum2=$sumc
+                fi
+
+        echo "$sum$sum1*$sum2"
+}
+
+if [ $# -ne 1 ]
+then
+        echo 'Usage: rsa <file>'
+        exit 1
+else
+
+        while read d
+        do
+
+                3=$(factor "$d")
+                minus_factor $3
+
+        done < "$FILE"
+fi
